@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01.Vue的使用</title>
+</head>
+
+<body>
+    <h1>01.Vue的使用</h1>
+    <div id="app">
+        <!-- View视图层 -->
+        className:{{className}}
+    </div>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        // Model数据层
+        const data = {
+            className: 'h5-2104'
+        }
+
+        // Controller控制层（Vue框架）
+        const vm = new Vue({
+            // 配置参数
+            // 关联视图
+            el: '#app',
+
+            // 关联数据层
+            data: data
+        })
+    </script>
+</body>
+
+</html>

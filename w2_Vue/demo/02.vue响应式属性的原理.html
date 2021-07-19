@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01.Vue的使用</title>
+</head>
+
+<body>
+    <h1>01.Vue的使用</h1>
+    <div id="app">
+        <!-- View视图层 -->
+        className:{{className}}
+    </div>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        // Model数据层
+        const data = {
+            // className: 'h5-2104',
+            _studentCount: 45,
+
+            // 存储器属性之：getter
+            // 用于监听读取操作
+            get className() {
+                // 当读取className属性时执行这里的代码
+                console.log('getter')
+
+                // 返回值为读取该属性时得到的值
+                return 'h5-2104';
+            },
+
+            // 存储器属性只：setter
+            // 用于监听修改操作
+            set className(newVal) {
+                // 当修改className属性时执行这里的代码
+                console.log('setter');
+
+                document.querySelector('#app').innerHTML = newVal
+            }
+        }
+
+        document.querySelector('#app').innerHTML = data.className;
+
+        // 利用Object.defineProperty设置getter&setter
+        Object.defineProperty(data, 'studentCount', {
+            get() {
+                return data._studentCount;
+            },
+            set(newValue) {
+                data._studentCount = newValue;
+            }
+        })
+
+        // Controller控制层（Vue框架）
+        const model = {username:'laoxie',password:123456}
+        const vm = new Vue({
+            // 配置参数
+            // 关联视图
+            el: '#app',
+
+            // 关联数据层
+            data: model
+        })
+        // for(let key in model){
+        //     Object.defineProperty(model,key,{
+        //         get(){
+
+        //         },
+        //         set(){
+
+        //         }
+        //     })
+        // }
+
+        // getter&setter监听属性的读取与修改
+
+        // 读取属性
+        // data.className; // h5-2104
+
+        // 修改属性
+        // data.className = 'hello 2104'
+        // document.querySelector('#app').innerHTML = 'hello 2104'
+    </script>
+</body>
+
+</html>
