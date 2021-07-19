@@ -28,6 +28,11 @@
 * 监听数据修改
     * 值属性
         > 有值的属性
+        * 属性特性
+            * configurable  可配置性（修改enumerable与writatable的总开关）
+            * enumberable  可枚举型（是否可遍历）
+            * writable     可写性（是否可修改）
+            * value         属性值
     * 存储器属性getter&setter：监听对象数据的获取与修改操作
         > Object.defineProperty(target,prop,descriptor)
         * target: 目标对象
@@ -35,9 +40,43 @@
         * descriptory: 属性特性
             * configurable  可配置性
             * enumerable    可枚举型
-            * get
-            * set
+            * get           监听读取操作
+            * set           监听修改操作
 
-
+    > PS: 传统方法添加的属性，属性特性默认为true，Object.defineProperty()添加的属性，属性特性默认为false
 * 响应式属性
     > Vue在实例化时，会遍历model数据层下所有的属性，把它们改成**getter&setter**，当值被修改时，相应的视图会被刷新
+
+* 在MVVM模式中，用户只需要关注数据变化，节点操作与页面刷新交给vm控制层处理
+    > 我们需要改变思维模式：从节点操作思维转变成数据操作思维
+
+* 指令Directive
+    > html标签属性
+    * v-text
+    * v-html    慎用（在保证html内容安全的情况加使用，如XSS攻击）
+    * v-for
+        > 能遍历数组、对象、字符串、数字等
+        * v-for="item in data"
+        * v-for="item of data"
+    * v-bind
+        > 格式：v-bind:属性="属性值"
+    * v-show    是否显示
+    * v-on      事件绑定
+        > 格式：v-on:事件类型="事件处理函数"
+    * v-model   双向数据绑定
+        > v-model替代方案(原理)：v-bind:value + v-on:input
+
+* Vue绑定数据的方式
+    * 单向数据绑定
+        * {{}}
+        * v-text
+        * v-html
+        * v-bind    把数据绑定到html属性
+    * 双向数据绑定
+        * 原理：
+            * model -> view : getter&setter
+            * view -> model: 事件
+
+### 练习
+* 课堂案例
+* todolist

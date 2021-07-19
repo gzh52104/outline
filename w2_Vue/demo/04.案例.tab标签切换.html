@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04.案例.tab标签切换</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+
+<body>
+    <h1>04.案例.tab标签切换</h1>
+    <div id="app" class="container">
+        <!-- View视图层 -->
+        <!-- 能直接写在视图层中的数据，必须为实例能访问到的属性 -->
+        <h4>练习：{{title}}</h4>
+        <!-- <div>{{htmlContent}}</div>
+        <div v-text="htmlContent"></div>
+        <div v-html="htmlContent"></div> -->
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item" v-for="(item,index) in tabs" v-on:click="changeTab(index)">
+                <!-- <a class="nav-link" v-bind:class="index===current?'active':''" href="#">{{item.name}}</a> -->
+                <a v-bind:class="{'nav-link':true,active:index===current}" href="#">{{item.name}}</a>
+            </li>
+        </ul>
+        <div class="p-5" v-for="(item,index) in tabs" v-show="index===current">
+            {{item.name}} 喜欢 {{item.hobby}}
+        </div>
+    </div>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        // Model数据层
+        const model = {
+            title: 'tab标签切换',
+            htmlContent: 'hello <strong style="color:#58bc58">2104</strong>',
+            current: 0,
+            tabs: [
+                {
+                    name: 'tiantian',
+                    hobby: '大保健'
+                },
+                {
+                    name: 'jingjing',
+                    hobby: '跟tiantian去大保健'
+                },
+                {
+                    name: 'laozhang',
+                    hobby: 'github'
+                },
+                {
+                    name: 'laoxie',
+                    hobby: '看他们大保健'
+                }
+            ]
+        }
+
+        const vm = new Vue({
+            // 关联视图
+            el: '#app',
+
+            // 关联数据层
+            // 实例化时Vue会遍历数据层中所有的属性，利用Object.defineProperty把他们改成getter&setter，并写入实例属性
+            data: model,
+
+            // 事件处理函数与自定义方法
+            methods: {
+                changeTab(index) {
+                    console.log(index)
+                    this.current = index;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

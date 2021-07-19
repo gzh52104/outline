@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03.属性特性</title>
+</head>
+
+<body>
+    <h1>03.属性特性</h1>
+    <script>
+        /**
+         * 03.属性特性
+            * 方法
+                * Object.defineProperty()
+                * Object.defineProperties()
+                * Object.getOwnPropertyDescriptor()
+            * 值属性 
+                 * configurable  可配置性（修改enumerable与writatable的总开关）
+                * enumberable  可枚举型（是否可遍历）
+                * writable     可写性（是否可修改）
+                * value         属性值
+            * 存储器属性
+                * configurable  可配置性
+                * enumerable    可枚举型
+                * get           监听读取操作
+                * set           监听修改操作
+            * 传统方法添加的属性，属性特性默认为true
+            * Object.defineProperty()添加的属性，属性特性为false
+         */
+
+        let person = {
+            username: 'jingjing',
+            password: 123,
+            // age:36,
+        }
+
+        // 修改属性特性
+        Object.defineProperty(person, 'password', {
+            enumerable: false
+        })
+
+        // 添加属性特性
+        Object.defineProperty(person, 'age', {
+            configurable: false,
+            value: 36,
+            // writable:false,
+            enumerable: true
+        })
+
+        // 报错：无法修改configurable为false的属性特性
+        // Object.defineProperty(person, 'age', {
+        //     writable: true
+        // })
+
+        // 同时添加多个属性特性
+        Object.defineProperties(person, {
+            _gender: {
+                configurable: true,
+                writable: true,
+                enumerable: true,
+                value: '女'
+            },
+            role: {
+                configurable: true,
+                writable: true,
+                enumerable: true,
+                value: 'svip'
+            }
+        })
+
+        // 利用存储器属性，实现属性监听
+        // 代理内部属性_gender
+        Object.defineProperty(person, 'gender', {
+            configurable: true,
+            enumerable: true,
+            get() {
+                console.log('gender.get')
+                return this._gender;
+            },
+            set(newValue) {
+                console.log('gender.set')
+                if (newValue == '未知') {
+                    alert('未知生物进入')
+                }
+                this._gender = newValue
+            }
+        })
+
+        for (let key in person) {
+            console.log('key=>', key, /*person[key]*/)
+        }
+    </script>
+</body>
+
+</html>
