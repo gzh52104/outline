@@ -101,7 +101,7 @@
             data:{}
         })
     ```
-    * 实例
+    * **实例**
         * 属性
             * 内置属性：$
             * 私有属性：_
@@ -122,7 +122,7 @@
         * get
         * set
 
-* 指令
+* **指令**
     * v-text
     * v-html
     * v-bind
@@ -142,7 +142,7 @@
         * v-model
             > 替代方案：v-bind:value + v-on:input
     * 事件绑定
-        * v-on
+        * v-on，简写@
     * 列表循环
         * v-for
     * 条件渲染
@@ -169,3 +169,46 @@
     2. 获取节点：this.$refs.input
 
 * 事件：v-on:事件类型.修饰符="事件处理函数"
+    * enter
+    * ctrl
+
+* **配置参数**
+    * el
+    * data
+    * methods
+    * template
+    * components
+    * computed  计算属性
+        > 依赖的数据发生变化，computed中的代码才会重新计算（重新执行），否则获取缓存的数据（上一次计算的数据）
+    * props
+* **实例**
+    > vm = new Vue(options)
+    * 实例属性
+        > vm.xx
+    * 实例方法
+        > vm.xx()
+* **类**
+    > Vue
+    * 类属性（静态属性）
+        > Vue.xx
+    * 类方法（静态方法）
+        > Vue.xx()
+* **原型**
+    * 原型属性
+        > vm.xx
+    * 原型方法
+        > vm.xx()
+
+* 组件Component
+    * 优点
+        * 更好的分工
+        * 便于维护
+        * 复用
+    * 定义
+        > 相当于创建一个html标签，一个组件就是一个Vue的实例，不能使用内置html标签作为组件名
+        * 全局组件：Vue.component()
+        * 局部组件：components
+    * 组件通讯
+        * 父->子：props
+            1. 父组件操作：给子组件添加属性，并传递数据
+            2. 子组件操作：子组件通过props接收

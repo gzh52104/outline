@@ -16,6 +16,7 @@
             <input type="text" class="form-control" v-model="todo" ref="input" v-on:keyup.ctrl.enter="addItem">
             <button class="btn btn-success" v-on:click="addItem">添加</button>
         </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -25,21 +26,49 @@
                     <th scope="col">操作</th>
                 </tr>
             </thead>
+            <!-- 未完成 -->
             <tbody>
-                <tr v-for="(item,idx) in todolist">
+                <tr v-for="(item,idx) in undonelist">
                     <th scope="row">{{idx+1}}</th>
                     <td>{{item.todo}}</td>
                     <td>{{item.done ? '是' : '否'}}</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-primary btn-sm">完成</button>
-                            <button type="button" class="btn btn-outline-danger btn-sm">删除</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                @click="completeItem(item.id)">完成</button>
+                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                @click="removeItem(item.id)">删除</button>
 
                         </div>
                     </td>
                 </tr>
 
             </tbody>
+            <!-- 已完成 -->
+            <tbody>
+                <tr v-for="(item,idx) in donelist">
+                    <th scope="row">{{idx+1}}</th>
+                    <td>{{item.todo}}</td>
+                    <td>{{item.done ? '是' : '否'}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                @click="completeItem(item.id)">完成</button>
+                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                @click="removeItem(item.id)">删除</button>
+
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        总数：{{todolist.length}}，完成：{{donelist.length}}，未完成：{{undonelist.length}}
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <script src="../node_modules/vue/dist/vue.js"></script>
@@ -69,12 +98,33 @@
                     },
                 ]
             },
+            computed: {
+                // 一般用于根据data属性计算出一些需要的数据（映射）
+                // 这里属性为getter（默认） & setter
+                // computed中的属性，在实例化时被写入vm实例
+                // computed属性依赖的数据发生变化，会自动执行函数中的代码
+                donelist() {
+                    console.log('computed')
+                    return this.todolist.filter(item => item.done)
+                },
+                undonelist() {
+                    return this.todolist.filter(item => !item.done)
+                },
+                // donelist:{
+                //     get(){},
+                //     set(){}
+                // }
+            },
             methods: {
                 // onEnter(e) {
                 //     if (e.keyCode === 13) {
                 //         this.addItem()
                 //     }
                 // },
+                testlist() {
+                    console.log('method')
+                    return this.todolist.filter(item => item.done)
+                },
                 addItem(e) {
                     const newItem = {
                         id: parseInt(Math.random() * 100000),
@@ -87,6 +137,16 @@
                     //清空并获得焦点
                     this.todo = ''
                     this.$refs.input.focus();
+                },
+                removeItem(id) {
+                    this.todolist = this.todolist.filter(item => item.id !== id);
+                },
+                completeItem(id) {
+                    this.todolist.forEach(item => {
+                        if (item.id === id) {
+                            item.done = true
+                        }
+                    })
                 }
 
             }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>07.Vue组件定义与使用</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+
+<body>
+    <h1>07.Vue组件定义与使用</h1>
+    <div id="app" class="container">
+        <list>
+            <mynav></mynav>
+        </list>
+        <list></list>
+        <list></list>
+        <list></list>
+    </div>
+    <template id="list">
+        <div>
+            list组件
+            <p>number:{{number}}</p>
+            <button @click="number++">修改</button>
+
+            <mynav></mynav>
+        </div>
+    </template>
+    <template id="mynav">
+        <nav>
+            <span v-for="item in menu">{{item}}</span>
+        </nav>
+    </template>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        const mynav = {
+            data() {
+                return {
+                    menu: ['首页', '注册', '登录']
+                }
+            },
+            template: `#mynav`
+        }
+        // 定义全局组件
+        Vue.component('list', {
+            // 在Vue组件中的data必须为函数形式，在函数中返回一个对象
+            data: function () {
+                console.log('list', this);
+                return {
+                    number: 1
+                }
+            },
+            // 组件的视图
+            template: `#list`,
+            // 定义局部组件: 这里定义的组件只能在**list组件**中使用
+            components: {
+                mynav,
+            }
+        });
+
+
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                count: 10
+            },
+            // template:'',
+            components: {
+                // a: {},
+                // b: {}
+            }
+        })
+    </script>
+</body>
+
+</html>
