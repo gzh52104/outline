@@ -80,3 +80,92 @@
 ### 练习
 * 课堂案例
 * todolist
+
+## day2-2
+
+### 复习
+* 历史
+    1. jquery
+    2. angular      ng-model
+    3. react        虚拟DOM
+    4. vue          综合angular与react的优点
+* 架构分层
+    * MVC
+    * MVP
+    * MVVM
+* Vue的使用
+    > 面向对象编程的框架
+    ```js
+        const vm = new Vue({
+            el:'#app',
+            data:{}
+        })
+    ```
+    * 实例
+        * 属性
+            * 内置属性：$
+            * 私有属性：_
+            * 自定义属性
+        * 方法
+* 响应式属性
+    > getter&setter
+* 属性特性
+    * 值属性
+        * configurable
+        * enumerable
+        * writable
+        * value
+    * 存储器属性
+        > 可监听属性的读取与修改
+        * configurable
+        * enumerable
+        * get
+        * set
+
+* 指令
+    * v-text
+    * v-html
+    * v-bind
+    * v-on
+    * v-for
+    * v-model
+    * v-show
+    * v-if/v-else-if/v-else
+
+* 数据绑定
+    * 单向绑定
+        * {{}}
+        * v-text
+        * v-html
+        * v-bind
+    * 双向绑定
+        * v-model
+            > 替代方案：v-bind:value + v-on:input
+    * 事件绑定
+        * v-on
+    * 列表循环
+        * v-for
+    * 条件渲染
+        * v-show
+        * v-if
+        ```js
+            <div v-if="show">1</div>
+            <div v-else-if="diplay"></div>
+            <span v-else>2</span>
+        ```
+
+### 知识点
+* 如何设置响应式属性
+    * 初始化时设置data
+
+* v-show与v-if的区别
+    * 频繁的显示隐藏建议使用v-show，会有更好的性能优势
+    * 初始化隐藏后不再需要显示的内容建议使用v-if
+
+* todolist待办事项
+
+* ref
+    1. 给元素添加ref属性：`<input ref="input" />`
+    2. 获取节点：this.$refs.input
+
+* 事件：v-on:事件类型.修饰符="事件处理函数"
