@@ -16,7 +16,7 @@
     </div>
     <template id="todohead">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" v-model="todo" ref="input" v-on:keyup.ctrl.enter="addItem">
+            <input type="text" class="form-control" v-model="todo" ref="input" v-on:keyup.enter="addItem">
             <button class="btn btn-success" v-on:click="addItem">添加</button>
         </div>
     </template>
@@ -37,8 +37,8 @@
             <td>
                 <div class="btn-group">
                     <button type="button" class="btn btn-outline-primary btn-sm"
-                        @click="completeItem(item.id)">完成</button>
-                    <button type="button" class="btn btn-outline-danger btn-sm" @click="removeItem(item.id)">删除</button>
+                        @click="completeitem(item.id)">完成</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" @click="removeitem(item.id)">删除</button>
 
                 </div>
             </td>
@@ -47,7 +47,8 @@
     <template id="todocontent">
         <tbody>
             <!-- <todoitem v-for="(item,idx) in todolist"></todoitem> -->
-            <tr is="todoitem" v-for="(item,idx) in todolist" :item="item" :idx="idx"></tr>
+            <tr is="todoitem" v-for="(item,idx) in todolist" :item="item" :idx="idx" :removeitem="removeitem"
+                :completeitem="completeitem"></tr>
         </tbody>
     </template>
     <template id="todobody">
@@ -61,16 +62,16 @@
                 </tr>
             </thead>
             <!-- <todocontent></todocontent> -->
-            <tbody is="todocontent" :todolist="todolist"></tbody>
+            <tbody is="todocontent" :todolist="todolist" :removeitem="removeitem" :completeitem="completeitem"></tbody>
 
             <!-- <todofoot></todofoot> -->
-            <tfoot is="todofoot"></tfoot>
+            <tfoot is="todofoot" :todolist="todolist"></tfoot>
         </table>
     </template>
     <template id="todolist">
         <div class="todolist">
-            <todohead></todohead>
-            <todobody :todolist="todolist"></todobody>
+            <todohead v-on:add="addItem"></todohead>
+            <todobody :todolist="todolist" :removeitem="removeItem" :completeitem="completeItem"></todobody>
         </div>
     </template>
     <script src="../node_modules/vue/dist/vue.js"></script>
@@ -84,20 +85,25 @@
             template: '#todohead',
             methods: {
                 addItem() {
+                    this.$emit('add', this.todo);
 
+                    // 清空并自动获得焦点
+                    this.todo = '';
+
+                    this.$refs.input.focus();
                 }
             }
         }
 
         const todoitem = {
-            props: ['item', 'idx'],
+            props: ['item', 'idx', 'removeitem', 'completeitem'],
             data() {
                 return {}
             },
             template: '#todoitem'
         }
         const todocontent = {
-            props: ['todolist'],
+            props: ['todolist', 'removeitem', 'completeitem'],
             data() {
                 return {}
             },
@@ -107,15 +113,24 @@
             }
         }
         const todofoot = {
+            props: ['todolist'],
             data() {
                 return {}
+            },
+            computed: {
+                donelist() {
+                    return this.todolist.filter(item => item.done)
+                },
+                undonelist() {
+                    return this.todolist.filter(item => !item.done)
+                }
             },
             template: '#todofoot'
         }
         const todobody = {
             // 接受父组件传入数据
             // props中的属性在组件实例化时会自动写入组件实例
-            props: ['todolist'],
+            props: ['todolist', 'removeitem', 'completeitem'],
             data() {
                 return {}
             },
@@ -154,6 +169,27 @@
             components: {
                 todohead,
                 todobody
+            },
+            methods: {
+                addItem(todo) {
+                    const newItem = {
+                        id: parseInt(Math.random() * 100000),
+                        todo,
+                        done: false,
+                        addtime: Date.now()
+                    }
+                    this.todolist.unshift(newItem);
+                },
+                removeItem(id) {
+                    this.todolist = this.todolist.filter(item => item.id !== id);
+                },
+                completeItem(id) {
+                    this.todolist.forEach(item => {
+                        if (item.id === id) {
+                            item.done = true
+                        }
+                    })
+                }
             }
         })
 
