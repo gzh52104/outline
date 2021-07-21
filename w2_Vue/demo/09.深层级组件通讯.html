@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>09.深层级组件通讯</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+
+<body>
+    <h1>09.深层级组件通讯</h1>
+    <div id="app" class="container">
+        <todolist></todolist>
+    </div>
+    <template id="todohead">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" v-model="todo" ref="input" v-on:keyup.enter="addItem">
+            <button class="btn btn-success" v-on:click="addItem">添加</button>
+        </div>
+    </template>
+    <template id="todofoot">
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    总数：{{todolist.length}}，完成：{{donelist.length}}，未完成：{{undonelist.length}}
+                </td>
+            </tr>
+        </tfoot>
+    </template>
+    <template id="todoitem">
+        <tr>
+            <th scope="row">{{idx+1}}</th>
+            <td>{{item.todo}}</td>
+            <td>{{item.done ? '是' : '否'}}</td>
+            <td>
+                <div class="btn-group">
+                    <!-- <button type="button" class="btn btn-outline-primary btn-sm"
+                        @click="completeitem(item.id)">完成</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" @click="removeitem(item.id)">删除</button> -->
+                    <button type="button" class="btn btn-outline-primary btn-sm"
+                        @click="handleComplete(item.id)">完成</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm"
+                        @click="handleRemove(item.id)">删除</button>
+
+                </div>
+            </td>
+        </tr>
+    </template>
+    <template id="todocontent">
+        <tbody>
+            <!-- <todoitem v-for="(item,idx) in todolist"></todoitem> -->
+            <tr is="todoitem" v-for="(item,idx) in todolist" :item="item" :idx="idx" :removeitem="removeitem"
+                :completeitem="completeitem"></tr>
+        </tbody>
+    </template>
+    <template id="todobody">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">代办事项</th>
+                    <th scope="col">是否完成</th>
+                    <th scope="col">操作</th>
+                </tr>
+            </thead>
+            <!-- <todocontent></todocontent> -->
+            <tbody is="todocontent" :todolist="todolist" :removeitem="removeitem" :completeitem="completeitem"></tbody>
+
+            <!-- <todofoot></todofoot> -->
+            <tfoot is="todofoot" :todolist="todolist"></tfoot>
+        </table>
+    </template>
+    <template id="todolist">
+        <div class="todolist">
+            <todohead v-on:add="addItem"></todohead>
+            <todobody :todolist="todolist" :removeitem="removeItem" :completeitem="completeItem"></todobody>
+        </div>
+    </template>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        //  创建一个Vue实例，用于绑定自定义事件
+        // const Bus = new Vue();
+
+        // 父组件操作
+        // Bus.$on('complete', completeItem)
+
+        // // 子组件操作
+        // Bus.$emit('complete',id)
+
+        const todohead = {
+            data() {
+                console.log('todohead', this)
+                return {
+                    todo: ''
+                }
+            },
+            template: '#todohead',
+            methods: {
+                addItem() {
+                    this.$emit('add', this.todo);
+
+                    // 清空并自动获得焦点
+                    this.todo = '';
+
+                    this.$refs.input.focus();
+                }
+            }
+        }
+
+        const todoitem = {
+            props: ['item', 'idx', 'removeitem', 'completeitem'],
+            data() {
+                console.log('todoitem', this)
+                return {}
+            },
+            template: '#todoitem',
+            methods: {
+                handleComplete(id) {
+                    // Bus.$emit('complete', id)
+                    this.$root.$emit('complete', id)
+                },
+                handleRemove(id) {
+                    // Bus.$emit('remove', id)
+                    this.$root.$emit('remove', id)
+                }
+            }
+        }
+        const todocontent = {
+            props: ['todolist', 'removeitem', 'completeitem'],
+            data() {
+                return {}
+            },
+            template: '#todocontent',
+            components: {
+                todoitem
+            }
+        }
+        const todofoot = {
+            props: ['todolist'],
+            data() {
+                return {}
+            },
+            computed: {
+                donelist() {
+                    return this.todolist.filter(item => item.done)
+                },
+                undonelist() {
+                    return this.todolist.filter(item => !item.done)
+                }
+            },
+            template: '#todofoot'
+        }
+        const todobody = {
+            // 接受父组件传入数据
+            // props中的属性在组件实例化时会自动写入组件实例
+            props: ['todolist', 'removeitem', 'completeitem'],
+            data() {
+                console.log('todobody', this);
+                return {}
+            },
+            template: '#todobody',
+            components: {
+                todocontent,
+                todofoot,
+            }
+        }
+        Vue.component('todolist', {
+            data() {
+                console.log('todolist', this)
+                // Bus.$on('complete', this.completeItem)
+                // Bus.$on('remove', this.removeItem)
+                this.$root.$on('complete', this.completeItem)
+                this.$root.$on('remove', this.removeItem)
+
+                return {
+                    todolist: [
+                        {
+                            id: 1,
+                            todo: '定个小目标。赚它一个亿越南盾',
+                            done: false,
+                            addtime: Date.now() + 1000
+                        },
+                        {
+                            id: 2,
+                            todo: '迎娶白富美，走上人生巅峰',
+                            done: true,
+                            addtime: Date.now() + 2000
+                        },
+                        {
+                            id: 3,
+                            todo: '出任CEO，达到疯癫状态',
+                            done: false,
+                            addtime: Date.now() + 3000
+                        },
+                    ]
+                }
+            },
+            template: '#todolist',
+            components: {
+                todohead,
+                todobody
+            },
+            methods: {
+                addItem(todo) {
+                    const newItem = {
+                        id: parseInt(Math.random() * 100000),
+                        todo,
+                        done: false,
+                        addtime: Date.now()
+                    }
+                    this.todolist.unshift(newItem);
+                },
+                removeItem(id) {
+                    this.todolist = this.todolist.filter(item => item.id !== id);
+                },
+                completeItem(id) {
+                    this.todolist.forEach(item => {
+                        if (item.id === id) {
+                            item.done = true
+                        }
+                    })
+                }
+            }
+        })
+
+        const vm = new Vue({
+            // el: '#app',
+            data: {
+                count: 10
+            },
+            template: `<div class="container" test='test'>
+                <h4>组件化开发todolist</h4>
+                <todolist></todolist>
+            </div>`
+        })
+
+        // setTimeout(() => {
+        vm.$mount('#app')
+        // }, 5000)
+    </script>
+</body>
+
+</html>

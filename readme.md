@@ -234,13 +234,78 @@
             1. 父组件操作： 给子组件自定义事件并把父组件的函数作为事件处理函数
             2. 子组件操作：在子组件通过`$emit()`触发自定义事件，并传递数据
         * 把父组件方法传到子组件中执行，并回传数据
+    * 兄弟A和B组件通讯（不推荐）
+        * A->父
+        * 父->B
     * 深层级组件通讯
         * props逐层传递（不推荐）
+            * 繁琐
+            * 不靠谱
         * Bus事件总线
+            1. 创建一个Vue实例Bus，用户绑定自定义事件
+                ```js
+                    const Bus = new Vue()
+                ```
+            2. 父组件操作：绑定事件，并把父组件方法作为事件处理函数
+                ```js
+                   Bus.$on('complete',this.completeItem) 
+                ```
+            3. 子组件操作：触发自定义事件，并传递数据
+                ```js
+                    Bus.$emit('complete',id)
+                ```
 * 组件数据设计原则：
     * 状态提升：把数据放到它们共同的父级
     * 谁的数据谁修改：把修改方法定义在数据所在的组件
-
 * 数据流
     * 单向数据流：
     * 双向数据流
+
+* **实例**
+    * 实例属性
+        * $refs
+        * 组件层级
+            * $parent   父组件
+            * $children 子组件
+            * $root     根实例
+
+    * 实例方法
+        * 关于事件
+            * $emit(type,arg)   触发事件
+            * $on(type,handle)  绑定事件
+                > v-on 在视图中绑定事件
+            * $off(type)        移除事件
+        * $mount()  手动挂载
+
+* VueCli命令行工具
+    * 使用步骤
+        1. 安装
+            ```js
+                npm i -g vue-cli
+            ```
+        2. 创建项目
+            ```js
+                vue create myapp
+            ```
+        3. 启动项目
+            * npm script    npm脚本
+                > npm run serve
+
+* 模块化
+    > 一个模块的作用域是独立的，如要获取模块中的变量，必须导出
+    * commonJS      NodeJS
+        * 导入：require()
+        * 导出：module.exports
+    * ESModule      ES6推出模块化规范
+        * 导入：import
+            > import xx from url
+        * 导出: export
+            * export {}     批量给模块对象添加属性
+            * export default {}     给模块对象添加default属性，并赋值一个对象
+    * AMD           require.js
+    * CMD           sea.js
+
+* Vue单文件组件
+    * template  视图
+    * script    组件配置
+    * style     组件样式
