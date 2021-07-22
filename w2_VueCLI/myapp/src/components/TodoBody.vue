@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <TodoContent :todolist="todolist"></TodoContent>
-    <TodoFoot :todolist="todolist" index="10" :age="31"></TodoFoot>
+    <TodoFoot :todolist="todolist" index="10" :age="30"></TodoFoot>
   </table>
 </template>
 <script>

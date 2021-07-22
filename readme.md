@@ -339,3 +339,75 @@
         > 1. 接收不存在的属性，得到undefined
         > 2. 添加属性但不接受，属性会自动成组件根元素的html属性
 * props类型校验
+    * props:['idx']
+    * props:{
+        idx:Number,
+        idx:[Number,String],
+        idx:{
+            type:[Number,String],
+            required:true,
+            default:1
+        },
+        num:{
+            type:Number,
+            validator(val){
+                return val>=18&&val<=30
+            }
+        }
+    }
+* 生命周期
+    > 一个组件从创建到被销毁的过程
+    * 创建阶段
+        * beforeCreate
+        * created
+    * 挂载阶段
+        * beforeMount
+        * mounted
+    * 更新阶段
+        * beforeUpdate
+        * updated
+    * 销毁阶段
+        * beforeDestroy
+        * destroyed
+
+    * 搞懂以下问题
+        1. 搞懂生命周期执行过程
+        2. 搞懂每个钩子函数适合做什么操作
+
+* 钩子函数执行顺序
+    > 父子组件钩子函数的执行顺序
+
+* 渲染配置
+    * el
+    * template
+    * render        渲染函数
+
+* createElement()创建虚拟节点
+    > 虚拟节点：一个结构类似于真实节点的对象
+
+* diff算法对比过程
+
+```js
+    {
+        get count(){
+
+        },
+        // this.count++;
+        // this.count = 10;
+        set count(newVal){
+            //监听到count的修改
+
+            // 修改虚拟节点
+
+            // 对比虚拟节点前后状态，找出差异项
+            // 如有差异项，才进行更新，没有差异项，则忽略以下操作
+
+            // 渲染真实节点
+            div.innerHTML = newVal;
+        }
+    }
+
+    // 修改数据 -> 渲染真实节点
+    // 修改数据 -> 修改虚拟节点 -> （对比虚拟节点，找出差异项） -> 渲染真实节点
+    对比虚拟节点：利用**diff算法**进行虚拟节点前后状态对比（对比两个对象），找出差异项，并渲染到页面
+```
