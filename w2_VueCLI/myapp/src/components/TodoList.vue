@@ -1,13 +1,23 @@
 <template>
   <div class="todolist">
     <h4>TodoList</h4>
-    <!-- <todohead v-on:add="addItem"></todohead>
-            <todobody :todolist="todolist" :removeitem="removeItem" :completeitem="completeItem"></todobody> -->
+    <!-- webpack会把大写的组件编译成todo-head -->
+    <TodoHead v-on:add="addItem"></TodoHead>
+    <TodoBody :todolist="todolist"></TodoBody>
   </div>
 </template>
 <script>
+import TodoHead from "./TodoHead.vue";
+import TodoBody from "./TodoBody.vue";
+import Bus from "./Bus";
+import "bootstrap/dist/css/bootstrap.css";
+
 export default {
   data() {
+    Bus.$on("complete", this.completeItem);
+    Bus.$on("remove", this.removeItem);
+    // this.$root.$on("complete", this.completeItem);
+    // this.$root.$on("remove", this.removeItem);
     return {
       todolist: [
         {
@@ -31,10 +41,9 @@ export default {
       ],
     };
   },
-  template: "#todolist",
   components: {
-    // todohead,
-    // todobody,
+    TodoHead,
+    TodoBody,
   },
   methods: {
     addItem(todo) {

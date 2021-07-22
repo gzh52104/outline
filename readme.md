@@ -309,3 +309,33 @@
     * template  视图
     * script    组件配置
     * style     组件样式
+
+## day2-4
+
+### 复习
+* vue-cli
+    > webpack构建工具
+* 模块化
+    > 模块的作用域是独立的
+    * 分类
+        * ESModule
+        * CommonJS
+        * AMD       require.js
+        * CMD       sea.js
+    * 使用
+        * 导入
+            > 获取模块对象中的属性
+            * ESModule: import
+        * 导出
+            > 给模块对象添加属性
+            * ESModule: export 
+* 组件化
+    * 单文件组件：.vue
+        > 把html、js、css放到一个文件当中
+
+* props父子通讯
+    1. 父组件操作：添加属性
+    2. 子组件操作：接收属性
+        > 1. 接收不存在的属性，得到undefined
+        > 2. 添加属性但不接受，属性会自动成组件根元素的html属性
+* props类型校验
