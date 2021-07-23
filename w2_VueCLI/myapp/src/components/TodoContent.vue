@@ -1,25 +1,25 @@
 <template>
   <tbody>
-    <TodoItem
+    <!-- <TodoItem
       v-for="(item, idx) in todolist"
       :item="item"
       :idx="idx"
       :removeitem="removeitem"
       :completeitem="completeitem"
       :key="item.id"
-    ></TodoItem>
+    ></TodoItem> -->
+    <slot/>
   </tbody>
 </template>
 <script>
-import TodoItem from "./TodoItem.vue";
+// import TodoItem from "./TodoItem.vue";
 export default {
-  props: ["todolist", "removeitem", "completeitem"],
+  // props: ["todolist", "removeitem", "completeitem"],
   data() {
     return {};
   },
-  template: "#todocontent",
-  components: {
-    TodoItem,
-  },
+  // components: {
+  //   TodoItem,
+  // },
 };
 </script>

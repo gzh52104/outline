@@ -39,7 +39,7 @@ export default {
 
     // ajax
     this.xhr = new XMLHttpRequest();
-    console.log("xhr", xhr);
+    console.log("xhr", this.xhr);
     // xhr.open()
     // xhr.send()
   },

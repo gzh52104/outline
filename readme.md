@@ -338,6 +338,8 @@
     2. 子组件操作：接收属性
         > 1. 接收不存在的属性，得到undefined
         > 2. 添加属性但不接受，属性会自动成组件根元素的html属性
+
+### 知识点
 * props类型校验
     * props:['idx']
     * props:{
@@ -411,3 +413,83 @@
     // 修改数据 -> 修改虚拟节点 -> （对比虚拟节点，找出差异项） -> 渲染真实节点
     对比虚拟节点：利用**diff算法**进行虚拟节点前后状态对比（对比两个对象），找出差异项，并渲染到页面
 ```
+
+
+## day2-5
+
+### 面试题
+* 子组件在哪个钩子函数中最先能获取到父组件传入的数据
+
+### 复习
+* props类型校验
+    * 父组件不提供，子组件接收：undefined
+    * 父组件提供，子组件不接收：成为组件根元素的html属性
+    ```js
+        {
+            // 没有类型校验
+            props:['datalist','index'],
+            props:{
+                // datalist:Array,
+                datalist:{
+                    type:Array,
+                    required:true,
+                    default(){
+                        return []
+                    }
+                }
+                index:[Number,String],
+                age:{
+                    type:Number,
+                    validator(val){
+                        return 
+                    }
+                }
+            }
+        }
+    ```
+* 生命周期
+    * 创建阶段
+        * beforeCreate
+        * 属性注入实例，响应式属性
+        * created
+    * 挂载阶段
+        * beforeMount
+        * 把数据挂在到视图
+        * Mounted
+    * 更新阶段
+        * beforeUpdate
+        * 根据数据渲染视图
+        * updated
+    * 销毁阶段
+        * beforeDestroy
+        * 切断Model与视图的联系，包括子组件的联系（删除监听器）
+        * destroyed
+
+### 知识点
+* 插槽
+    > 插槽是在父组件生成结构后再传入子组件渲染（props:把数据传入子组件再生成结构渲染）
+    * 优势
+        * 可定制化
+    * 插槽组件`<slot/>`
+        * 默认插槽
+        * 具名插槽：有名字的插槽
+            1. 给`slot`添加name属性
+            2. 利用template标签控制插入具名插槽的内容
+    * v-slot指令
+        > 只能用在template标签中
+
+* 在父组件获取子组件的数据：作用域插槽
+    > 把数据从子组件传到父组件
+
+
+* Vue的UI框架
+    * PC
+        * elementUI     饿了么
+        * ant-design    蚂蚁金服
+        * iView
+        * Bootstrap
+        * ...
+    * 移动端
+        * VantUI        有赞
+
+

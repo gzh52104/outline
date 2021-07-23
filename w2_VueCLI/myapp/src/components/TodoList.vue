@@ -3,21 +3,44 @@
     <h4>TodoList</h4>
     <!-- webpack会把大写的组件编译成todo-head -->
     <TodoHead v-on:add="addItem"></TodoHead>
-    <TodoBody :todolist="todolist"></TodoBody>
+    <!-- <TodoBody :todolist="todolist"></TodoBody> -->
+
+    <!-- 利用插槽实现 -->
+    <TodoBody>
+      <!-- template中的内容写入具名插槽，其他的内容自动插入默认插槽 -->
+      <template v-slot:body>
+        <TodoContent>
+          <TodoItem
+            v-for="(item, idx) in todolist"
+            :item="item"
+            :idx="idx"
+            :key="item.id"
+          ></TodoItem>
+        </TodoContent>
+      </template>
+      <template #foot>
+        <TodoFoot :todolist="todolist" index="10" :age="30">
+          <template #default="{ donelist, undonelist }">
+            总数量：{{ todolist.length }}条记录，完成：{{
+              donelist.length
+            }}，完成：{{ undonelist.length }}
+          </template>
+        </TodoFoot>
+      </template>
+    </TodoBody>
   </div>
 </template>
 <script>
 import TodoHead from "./TodoHead.vue";
 import TodoBody from "./TodoBody.vue";
+import TodoContent from "./TodoContent.vue";
+import TodoFoot from "./TodoFoot.vue";
+import TodoItem from "./TodoItem.vue";
 import Bus from "./Bus";
 import "bootstrap/dist/css/bootstrap.css";
 
 export default {
   data() {
-    Bus.$on("complete", this.completeItem);
-    Bus.$on("remove", this.removeItem);
-    // this.$root.$on("complete", this.completeItem);
-    // this.$root.$on("remove", this.removeItem);
     return {
       todolist: [
         {
@@ -44,6 +67,9 @@ export default {
   components: {
     TodoHead,
     TodoBody,
+    TodoContent,
+    TodoFoot,
+    TodoItem,
   },
   methods: {
     addItem(todo) {
@@ -65,6 +91,13 @@ export default {
         }
       });
     },
+  },
+  created() {
+    
+    Bus.$on("complete", this.completeItem);
+    Bus.$on("remove", this.removeItem);
+    // this.$root.$on("complete", this.completeItem);
+    // this.$root.$on("remove", this.removeItem);
   },
 };
 </script>

@@ -2,11 +2,13 @@
   <tfoot>
     <tr>
       <td colspan="4">
-        总数：{{ todolist.length }}，完成：{{ donelist.length }}，未完成：{{
-          undonelist.length
-        }}
-        <br />
-        index: {{ index }}, age:{{ age }}
+        <slot :donelist="donelist" :undonelist="undonelist">
+          总数：{{ todolist.length }}，完成：{{ donelist.length }}，未完成：{{
+            undonelist.length
+          }}
+          <!-- <br />
+          index: {{ index }}, age:{{ age }} -->
+        </slot>
       </td>
     </tr>
   </tfoot>

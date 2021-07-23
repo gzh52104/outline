@@ -8,8 +8,12 @@
         <th scope="col">操作</th>
       </tr>
     </thead>
-    <TodoContent :todolist="todolist"></TodoContent>
-    <TodoFoot :todolist="todolist" index="10" :age="30"></TodoFoot>
+    <!-- <TodoContent :todolist="todolist"></TodoContent>
+    <TodoFoot :todolist="todolist" index="10" :age="30"></TodoFoot> -->
+    <!-- slot插槽：用于显示组件标签中的内容 -->
+    <slot />
+    <slot name="body" />
+    <slot name="foot" />
   </table>
 </template>
 <script>
@@ -18,7 +22,7 @@ import TodoFoot from "./TodoFoot.vue";
 export default {
   // 接受父组件传入数据
   // props中的属性在组件实例化时会自动写入组件实例
-  props: ["todolist"],
+  // props: ["todolist"],
   data() {
     console.log("todobody", this);
     return {};
