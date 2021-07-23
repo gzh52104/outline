@@ -493,3 +493,80 @@
         * VantUI        有赞
 
 
+* Vue Router
+    > 实现根据不同的url地址，访问不同的页面
+    * 应用分类
+        * 多页面应用MPA: Multple Page Application
+        * 单页面应用SPA：Single Page Application
+            > index.html
+
+    * 使用步骤
+        1. 安装
+            ```js
+                npm install vue-router
+            ```
+        2. 引用
+            ```js
+                import VueRouter from 'vue-router'
+            ```
+        3. 安装插件
+            ```js
+                Vue.use(VueRouter)
+            ```
+        4. 实例化路由（配置路由表）
+            ```js
+                const router = new VueRouter({
+                    // 配置参数
+                    routes:[
+                        {path:'/home',component:Home},
+                        {path:'/login',component:Login},
+                    ]
+                })
+            ```
+        5. 把路由注入Vue的根实例
+            ```js
+                new Vue({
+                    router
+                })
+            ```
+        6. 使用路由
+            * 显示路由:`<router-view/>`
+
+* 路由跳转
+    * 声明式导航（`<router-link>`组件导航）
+    * 命令式导航（编程式导航）
+        * $route: 当前路由信息
+        * $router: 路由实例
+            * 路由跳转
+                * 跳转方法
+                    * push()   等效与`<router-link/>`的效果
+                    * replace() 等效于`<router-link replace/>`
+                    * back()    回退
+                    * forward() 前进
+                    * go()      前进后退
+                * 跳转方式
+                    * path路径跳转
+                    * name属性跳转
+            
+* 路由传参
+    * query：通过url参数传参（?后的参数）
+        > 接收：this.$route.query.xxx
+
+* VantUI的使用
+    1. 安装模块
+        ```js
+            npm i vant
+        ```
+    2. 引入
+        ```js
+            import Vant from 'vant'
+
+            // 引入样式
+            import 'vant/lib/index.css';
+        ```
+    3. 安装插件
+        ```js
+            Vue.use(Vant)
+        ```
+
+        
